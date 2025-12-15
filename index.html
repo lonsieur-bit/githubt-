@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل جديد</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDA2DTjy0BkcUl9CGNTymS3Ng48bkWZK0Y&libraries=places&language=ar&region=SA"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div id="splash" class="splash">
+        <div class="splash-card">
+            <img src="onecare__5_-removebg-preview.png" alt="OneCare" class="splash-logo">
+            <p class="splash-title"></p>
+            <p class="splash-sub"></p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="registration-wrapper">
+            <!-- Step 1: Account Type Selection -->
+            <div id="step1" class="registration-step active">
+                <div class="header">
+                    <h1>تسجيل جديد</h1>
+                </div>
+
+                <div class="account-type-selector">
+                    <button class="type-btn" data-type="shipper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"></path>
+                            <path d="M5.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path>
+                            <path d="M18.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path>
+                        </svg>
+                        تسجيل كتشاليح
+                    </button>
+                    <button class="type-btn active" data-type="buyer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        تسجيل كمشتري
+                    </button>
+                </div>
+
+                <div class="footer-link">
+                    <p>لديك حساب ؟ <a href="#" onclick="openLogin(event)">سجل دخولك</a></p>
+                </div>
+            </div>
+
+            <!-- Step 2: Sign Up Form -->
+            <div id="step2" class="registration-step">
+                <div class="header">
+                    <button class="back-btn" onclick="goToStep(1)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <h1>تسجيل جديد</h1>
+                </div>
+
+                <form id="signupForm" class="registration-form">
+                    <div class="form-group">
+                        <label for="username">اسم المستخدم <span class="required">*</span></label>
+                        <input type="text" id="username" name="username" placeholder="أدخل اسم المستخدم" required>
+                    </div>
+
+                    <div class="form-group phone-group">
+                        <label for="phone">رقم الجوال <span class="required">*</span></label>
+                        <div class="phone-field">
+                            <div class="phone-control">
+                                <button type="button" class="phone-flag-btn" aria-label="اختر الدولة">🇸🇦 +966</button>
+                                <span class="phone-separator"></span>
+                                <input type="tel" id="phone" name="phone" class="phone-input" placeholder="5xxxxxxxx" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">المدينة <span class="required">*</span></label>
+                        <div class="select-wrapper">
+                            <select id="city" name="city" required>
+                                <option value="">اختر المدينة</option>
+                                <option value="riyadh">الرياض</option>
+                                <option value="jeddah">جدة</option>
+                                <option value="madinah">المدينة المنورة</option>
+                                <option value="hail">حايل</option>
+                                <option value="abha">ابها</option>
+                                <option value="khamis">خميس مشيط</option>
+                                <option value="hafar">حفر الباطن</option>
+                                <option value="ula">العلاية</option>
+                            </select>
+                            <svg class="select-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">اكمل</button>
+                </form>
+
+                <div class="footer-link">
+                    <p>لديك حساب ؟ <a href="#" onclick="openLogin(event)">سجل دخولك</a></p>
+                </div>
+            </div>
+
+            <!-- Step 3: Location -->
+            <div id="step3" class="registration-step">
+                <div class="header">
+                    <button class="back-btn" onclick="goToStep(2)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <h1>تسجيل جديد</h1>
+                </div>
+
+                <div class="location-section">
+                    <label class="location-label">الوصول للموقع <span class="required">*</span></label>
+                    <div class="map-container">
+                        <div id="map" class="map-display"></div>
+                    </div>
+                    <div id="locationInfo" class="location-info"></div>
+                </div>
+
+                <button type="button" class="submit-btn" id="registerBtn">تسجيل</button>
+
+                <div class="footer-link">
+                    <p>لديك حساب ؟ <a href="#" onclick="openLogin(event)">سجل دخولك</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Shell (shown after registration/login) -->
+        <div id="appShell" class="app-shell">
+            <header class="app-header">
+                <h1 id="appTitle">الرئيسية</h1>
+            </header>
+
+            <main class="app-content">
+                <section id="homeSection" class="app-section active">
+                    <div class="home-hero">
+                        <div class="hero-text">
+                            <p class="hero-eyebrow">أهلًا بك</p>
+                            <h2>ابدأ طلبك أو تابع عروضك</h2>
+                            <p class="hero-sub">إدارة طلباتك وعروض الموردين في مكان واحد.</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <button class="pill" data-action="newRequest">+ طلب جديد</button>
+                        <button class="pill light" data-action="offers">عرض العروض</button>
+                        <button class="pill light" data-action="profile">الملف الشخصي</button>
+                    </div>
+
+                    <div class="card-grid">
+                        <button class="card featured" data-action="newRequest">
+                            <div>
+                                <p class="card-title">إنشاء طلب</p>
+                                <p class="card-desc">حدد الفئة والوصف لتحصل على عروض سريعة</p>
+                            </div>
+                        </button>
+                        <button class="card" data-action="offers">
+                            <div>
+                                <p class="card-title">عروضي</p>
+                                <p class="card-desc">راجع الأسعار وقارن أفضل الخيارات</p>
+                            </div>
+                        </button>
+                        <button class="card" data-action="profile">
+                            <div>
+                                <p class="card-title">ملفي</p>
+                                <p class="card-desc">بياناتك، مدنك، وتفضيلاتك</p>
+                            </div>
+                        </button>
+                    </div>
+                </section>
+
+                <section id="requestSection" class="app-section">
+                    <div class="stepper">
+                        <div class="step active" data-step="brand"></div>
+                        <div class="step" data-step="year"></div>
+                        <div class="step" data-step="details"></div>
+                    </div>
+
+                    <div id="stepBrand" class="section-block request-step active">
+                        <h2>اختر وكالة السيارة</h2>
+                        <input type="hidden" id="reqBrand" name="reqBrand" value="">
+                        <div class="brand-grid" id="brandGrid">
+                            <button class="brand-tile" data-brand="ford" style="background-image:url('1.png');" aria-label="Ford"></button>
+                            <button class="brand-tile" data-brand="mazda" style="background-image:url('2.png');" aria-label="Mazda"></button>
+                            <button class="brand-tile" data-brand="nissan" style="background-image:url('3.png');" aria-label="Nissan"></button>
+                            <button class="brand-tile" data-brand="kia" style="background-image:url('4.png');" aria-label="Kia"></button>
+                            <button class="brand-tile" data-brand="hyundai" style="background-image:url('5.png');" aria-label="Hyundai"></button>
+                            <button class="brand-tile placeholder" data-brand="gmc" aria-label="GMC">GMC</button>
+                            <button class="brand-tile placeholder" data-brand="chevrolet" aria-label="Chevrolet">Chevy</button>
+                            <button class="brand-tile placeholder" data-brand="mercedes" aria-label="Mercedes">Mercedes</button>
+                            <button class="brand-tile placeholder" data-brand="porsche" aria-label="Porsche">Porsche</button>
+                            <button class="brand-tile placeholder" data-brand="lexus" aria-label="Lexus">Lexus</button>
+                            <button class="brand-tile placeholder" data-brand="bmw" aria-label="BMW">BMW</button>
+                            <button class="brand-tile placeholder" data-brand="audi" aria-label="Audi">Audi</button>
+                            <button class="brand-tile placeholder" data-brand="vw" aria-label="Volkswagen">VW</button>
+                        </div>
+                        <div class="step-actions">
+                            <button class="pill" id="brandNext">التالي</button>
+                        </div>
+                    </div>
+
+                    <div id="stepYear" class="section-block request-step">
+                        <h2>اختر سنة الصنع</h2>
+                        <div class="form-group">
+                            <select id="reqYear">
+                                <option value="">اختر السنة</option>
+                                <option>2025</option>
+                                <option>2024</option>
+                                <option>2023</option>
+                                <option>2022</option>
+                                <option>2021</option>
+                                <option>2020</option>
+                                <option>2019</option>
+                                <option>2018</option>
+                            </select>
+                        </div>
+                        <div class="step-actions">
+                            <button class="ghost-btn" data-back="brand">السابق</button>
+                            <button class="pill" id="yearNext">التالي</button>
+                        </div>
+                    </div>
+
+                    <div id="stepDetails" class="section-block request-step">
+                        <div class="detail-header">
+                            <div class="detail-title">
+                                <div class="progress-line"><span></span></div>
+                            </div>
+                        </div>
+
+                        <div class="car-summary">
+                            <div>
+                                <p class="summary-label">السيارة</p>
+                                <p id="summaryCar" class="summary-value">—</p>
+                            </div>
+                        </div>
+
+                        <div class="section-divider"></div>
+                        <h3 class="section-title">تفاصيل القطعة التي تحتاجها</h3>
+
+                        <div class="form-group required">
+                            <label>نوع القطعة</label>
+                            <select id="reqCategory">
+                                <option value="">اختر الفئة</option>
+                                <option value="body">قطعة خارجية</option>
+                                <option value="interior">قطعة داخلية</option>
+                                <option value="electrical">قطعة كهربائية</option>
+                                <option value="mechanical">قطعة ميكانيكية</option>
+                                <option value="accessory">اكسسوار</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group required">
+                            <label>اسم القطعة</label>
+                            <input type="text" id="reqPartName" placeholder="مثل: بطارية">
+                        </div>
+
+                        <div class="form-group">
+                            <label>وصف</label>
+                            <textarea id="reqNotes" rows="4" placeholder="صف ما تحتاجه"></textarea>
+                        </div>
+
+                        <div class="upload-box">
+                            <div class="upload-icon">⇪</div>
+                            <p>ارفع صورة</p>
+                        </div>
+
+                        <div class="section-divider"></div>
+                        <h3 class="section-title">تفاصيل العرض</h3>
+
+                        <div class="form-group">
+                            <label>المدينة</label>
+                            <select id="reqCity">
+                                <option value="">اختر المدينة</option>
+                                <option value="jeddah">جدة</option>
+                                <option value="riyadh">الرياض</option>
+                                <option value="dammam">الدمام</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>تصفية العروض</label>
+                            <select id="reqFilter">
+                                <option value="default">افتراضي</option>
+                                <option value="price_low">الأقل سعرًا</option>
+                                <option value="price_high">الأعلى تقييمًا</option>
+                                <option value="closest">الأقرب</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group checkbox-row inline">
+                            <label><input type="checkbox" id="reqNoteMore"> هل ترغب في إضافة قطعة أخرى ؟</label>
+                            <label><input type="checkbox" id="reqDelivery"> توصيل الطلب لي.</label>
+                        </div>
+                        <div class="form-group checkbox-row">
+                            <label><input type="checkbox" id="reqAgree"> اوافق على الشروط والأحكام.</label>
+                        </div>
+                        <div class="step-actions">
+                            <button class="ghost-btn" data-back="year">السابق</button>
+                            <button class="pill" id="submitRequest">إرسال الطلب</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="offersSection" class="app-section">
+                    <div class="section-block">
+                        <h2>العروض</h2>
+                        <div id="offersList" class="empty-state">لا يوجد عروض بعد</div>
+                    </div>
+                </section>
+
+                <section id="profileSection" class="app-section">
+                    <div class="section-block profile-card">
+                        <div class="profile-header">
+                            <div>
+                                <p class="hero-eyebrow">حسابك</p>
+                                <h2>الملف الشخصي</h2>
+                            </div>
+                        </div>
+                        <div class="profile-rows">
+                            <div class="profile-row">
+                                <span class="label">الاسم</span>
+                                <span id="profileName" class="value">—</span>
+                            </div>
+                            <div class="profile-row">
+                                <span class="label">رقم الجوال</span>
+                                <span id="profilePhone" class="value">—</span>
+                            </div>
+                            <div class="profile-row">
+                                <span class="label">المدينة</span>
+                                <span id="profileCity" class="value">—</span>
+                            </div>
+                            <div class="profile-row">
+                                <span class="label">نوع الحساب</span>
+                                <span id="profileRole" class="value">—</span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button id="logoutBtn" class="ghost-btn">تسجيل الخروج</button>
+                            <button id="deleteAccountBtn" class="danger-btn">حذف الحساب</button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <nav class="bottom-nav">
+                <button class="nav-btn active" data-target="homeSection">
+                    <span class="nav-icon nav-home"></span>
+                    <span class="nav-label">الرئيسية</span>
+                </button>
+                <button class="nav-btn" data-target="requestSection">
+                    <span class="nav-icon nav-request"></span>
+                    <span class="nav-label">الطلبات</span>
+                </button>
+                <button class="nav-btn" data-target="offersSection">
+                    <span class="nav-icon nav-offers"></span>
+                    <span class="nav-label">عروضي</span>
+                </button>
+                <button class="nav-btn" data-target="profileSection">
+                    <span class="nav-icon nav-profile"></span>
+                    <span class="nav-label">حسابي</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-backdrop" onclick="closeLogin()"></div>
+            <div class="modal-content">
+                <h2>تسجيل الدخول</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginPhone">رقم الجوال</label>
+                        <div class="phone-field">
+                            <div class="phone-control">
+                                <button type="button" class="phone-flag-btn" aria-label="اختر الدولة">🇸🇦 +966</button>
+                                <span class="phone-separator"></span>
+                                <input type="tel" id="loginPhone" name="loginPhone" class="phone-input" placeholder="5xxxxxxxx" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="loginError" class="form-hint error-text" aria-live="polite"></div>
+                    <button type="submit" class="submit-btn">دخول</button>
+                    <button type="button" class="ghost-btn" onclick="closeLogin()">إلغاء</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pledge Modal -->
+        <div id="pledgeModal" class="modal">
+            <div class="modal-backdrop" onclick="closePledge()"></div>
+            <div class="modal-content pledge-card">
+                <h3>تعهد</h3>
+                <p class="pledge-text">
+                    أُقسم بالله العظيم أنه في حال تمّت عملية البيع عبر هذا التطبيق أو بسببِه، فإنني ألتزم بتحويل المستحقات خلال 3 أيام عبر “قسم مستحقات التطبيق في ملفي الشخصي”، والله مطّلع على نيّاتي وتعاملاتي:
+                </p>
+                <ul class="pledge-list">
+                    <li>للعمليات التي تقل عن 1000 ريال: تحويل مبلغ 50 ريال.</li>
+                    <li>للعمليات التي تبلغ 1000 ريال فأكثر: تحويل نسبة (15%) من قيمة السلعة.</li>
+                </ul>
+                <button type="button" class="pill" onclick="confirmPledge()">اتعهد بذلك</button>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal">
+            <div class="modal-backdrop" onclick="closeSuccess()"></div>
+            <div class="modal-content success-card">
+                <div class="success-icon">✓</div>
+                <h3>تم إرسال طلبك بنجاح!</h3>
+                <p class="form-hint">بانتظار عروض التشاليح، دايم قريب.</p>
+                <button type="button" class="pill" onclick="closeSuccess()">تم</button>
+            </div>
+        </div>
+
+        <!-- App Message Modal -->
+        <div id="appMessageModal" class="modal">
+            <div class="modal-backdrop" onclick="closeAppMessage()"></div>
+            <div class="modal-content">
+                <p id="appMessageText" class="form-hint" style="text-align:center;"></p>
+                <button type="button" class="pill" onclick="closeAppMessage()" style="margin-top:10px;">تم</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
